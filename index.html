@@ -57,7 +57,7 @@ body::after {
   z-index:1;
   text-align:center;
   padding:40px 30px;
-  max-width:580px;
+  max-width:460px;
   width:100%;
 }
 
@@ -92,7 +92,7 @@ body::after {
 /* Title */
 h1 {
   font-family:'Bebas Neue',sans-serif;
-  font-size:58px;
+  font-size:48px;
   letter-spacing:4px;
   line-height:0.95;
   margin-bottom:8px;
@@ -189,6 +189,7 @@ h1 .gr { color:#19ed97; }
 
 /* Mobile */
 @media (max-width:500px) {
+  .container { padding:30px 20px; }
   h1 { font-size:42px; }
   .cta { font-size:18px; padding:14px 40px; }
   .logo { width:180px; }
@@ -196,7 +197,7 @@ h1 .gr { color:#19ed97; }
 
 .form-box {
   display:flex; flex-direction:column; gap:12px;
-  margin-bottom:12px; width:100%; max-width:400px;
+  margin-bottom:12px; width:100%; max-width:360px;
   animation:fadeDown 0.8s ease-out 0.65s both;
 }
 .inp {
@@ -231,6 +232,7 @@ h1 .gr { color:#19ed97; }
 
   <div class="form-box">
     <input type="text" id="fname" placeholder="Tu nombre" class="inp">
+    <input type="email" id="femail" placeholder="Tu email" class="inp">
     <input type="tel" id="fphone" placeholder="Tu WhatsApp" class="inp">
     <a class="cta" href="#" onclick="submitForm(event)">DESCARGAR GRATIS</a>
   </div>
@@ -284,6 +286,7 @@ function oldDownload(e) {
 async function submitForm(e) {
   e.preventDefault();
   const name = document.getElementById("fname");
+  const email = document.getElementById("femail");
   const phone = document.getElementById("fphone");
   const btn = e.target;
   if (!name.value.trim()) { name.style.borderColor="#ff4444"; name.focus(); return; }
@@ -292,7 +295,7 @@ async function submitForm(e) {
   try {
     await fetch("https://formspree.io/f/xgodwpve", {
       method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({ nombre:name.value.trim(), whatsapp:phone.value.trim(), _subject:"Nuevo lead Omicron" })
+      body: JSON.stringify({ nombre:name.value.trim(), email:email.value.trim(), whatsapp:phone.value.trim(), _subject:"Nuevo lead Omicron" })
     });
   } catch(err) {}
   btn.innerText = "PREPARANDO...";
