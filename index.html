@@ -242,10 +242,10 @@ h1 .gr { color:#19ed97; }
 <div class="footer">OMICRON FITNESS · <span>SPORTS NUTRITION</span> · @OMICRONSNMX</div>
 
 <script>
-const PDF_URL = "Omicron_Manual_V01.pdf";
+const PDF_URL = "Omicron%20Manual%20V.01.pdf";
 
 
-async function submitForm(e) {
+function submitForm(e) {
   e.preventDefault();
   const name = document.getElementById("fname");
   const email = document.getElementById("femail");
@@ -253,16 +253,17 @@ async function submitForm(e) {
   const btn = e.target;
   if (!name.value.trim()) { name.style.borderColor="#ff4444"; name.focus(); return; }
   if (!phone.value.trim()) { phone.style.borderColor="#ff4444"; phone.focus(); return; }
-  btn.innerText = "ENVIANDO...";
-  try {
-    await fetch("https://formspree.io/f/xgodwpve", {
-      method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({ nombre:name.value.trim(), email:email.value.trim(), whatsapp:phone.value.trim(), _subject:"Nuevo lead Omicron" })
-    });
-  } catch(err) {}
-  btn.innerText = "✅ ¡LISTO!";
+  
+  // Abre PDF PRIMEIRO (antes do async, senão cel bloqueia)
   window.open(PDF_URL, "_blank");
+  btn.innerText = "✅ ¡LISTO!";
   setTimeout(() => btn.innerText = "DESCARGAR GRATIS", 3000);
+  
+  // Envia form em background (não bloqueia)
+  fetch("https://formspree.io/f/xgodwpve", {
+    method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ nombre:name.value.trim(), email:email.value.trim(), whatsapp:phone.value.trim(), _subject:"Nuevo lead Omicron" })
+  }).catch(()=>{});
 }
 </script>
 </body>
