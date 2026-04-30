@@ -305,17 +305,20 @@ async function submitForm(e) {
     for (let i=0;i<raw.length;i++) arr[i]=raw.charCodeAt(i);
     const blob = new Blob([arr],{type:"application/pdf"});
     const url = URL.createObjectURL(blob);
-    if (navigator.share && navigator.canShare) {
-      const file = new File([blob],"Omicron_Manual_V01.pdf",{type:"application/pdf"});
-      if (navigator.canShare({files:[file]})) {
-        navigator.share({files:[file],title:"Guía Omicron"}).catch(()=>window.open(url,"_blank"));
-        btn.innerText="✅ ¡LISTO!"; setTimeout(()=>btn.innerText="DESCARGAR GRATIS",3000); return;
-      }
+    const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      window.open(url, "_blank");
+    } else {
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Omicron_Manual_V01.pdf";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
-    const a=document.createElement("a"); a.href=url; a.download="Omicron_Manual_V01.pdf";
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    btn.innerText="✅ ¡DESCARGADO!"; setTimeout(()=>btn.innerText="DESCARGAR GRATIS",3000);
-  } catch(err) { btn.innerText="DESCARGAR GRATIS"; }
+    btn.innerText = "✅ ¡LISTO!";
+    setTimeout(() => btn.innerText = "DESCARGAR GRATIS", 3000);
+  } catch(err) { btn.innerText = "DESCARGAR GRATIS"; }
 }
 </script>
 </body>
